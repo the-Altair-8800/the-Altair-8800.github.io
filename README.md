@@ -2,6 +2,8 @@
 
 &lt;altair-8800> simulator using web components.
 
+Online: [The-Altair-8800.github.io](https://the-altair-8800.github.io/)
+
 ## Disclaimer
 
 Claude Code wrote the whole Altair 8800 Simulator in 20 minutes.
