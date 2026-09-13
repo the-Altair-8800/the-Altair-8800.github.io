@@ -1,4 +1,6 @@
 :host {
+  --panel-font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
   display: block;
   margin: 1em 0;
   border-radius: 10px;

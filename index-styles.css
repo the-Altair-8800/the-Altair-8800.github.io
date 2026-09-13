@@ -3,8 +3,16 @@
   --ink: beige;
   --font: Arial, sans-serif;
   --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
-  /* The panel silkscreen is a tight condensed grotesque. */
-  --panel-font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  --blue1: rgb(31, 95, 158);
+  --blue2: rgb(45, 124, 196);
+  --blue3: rgb(90, 166, 224);
+  --bluebar: linear-gradient(
+    90deg,
+    rgb(31, 95, 158) 0%,
+    rgb(45, 124, 196) 55%,
+    rgb(90, 166, 224) 100%
+  );
 }
 
 body {
@@ -19,6 +27,9 @@ body {
 h1 {
   margin-block: 0;
   margin-top: 0.5em;
+  background: var(--bluebar);
+  color: beige;
+  text-shadow: 0 1px 0 black;
 }
 
 h2 {
@@ -30,8 +41,12 @@ p {
   margin-block: 0.5em;
 }
 
+a {
+  color: var(--blue3);
+}
+
 code {
   font-family: var(--mono);
-  color: var(--ink);
-  background: grey;
+  font-size: 120%;
+  color: var(--blue3);
 }

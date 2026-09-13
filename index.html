@@ -6,6 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta property="og:image" content="https://the-altair-8800.github.io/altair-8800-panel.png">
 
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d5fd1'/%3E%3Cpath d='M20 48L30 16h4l10 32h-6l-2.2-8h-7.6L26 48h-6zm8.6-12h6.8l-3.4-12-3.4 12z' fill='white'/%3E%3C/svg%3E">
+
   <title>Altair 8800 front panel simulator</title>
 
   <meta name="description"
@@ -13,6 +16,7 @@
 
   <link rel="stylesheet" href="index-styles.css">
 
+  <!-- load all Custom Elements -->
   <script type="module" src="define-elements.js"></script>
 
   <script>
@@ -24,8 +28,10 @@
         if (this.hasAttribute("b")) title = `<b>${title}</b>`;
         this.innerHTML = `<a href="${uri}">${title}</a>`;
       }
-    })
-    customElements.define("wiki-link", class extends HTMLElement {
+    });
+    </script>
+    <script>
+      customElements.define("wiki-a", class extends HTMLElement {
       connectedCallback() {
         setTimeout(() => { // wait till innerHTML is parsed by the browser
           let page = this.getAttribute("page");
@@ -33,7 +39,7 @@
           this.innerHTML = `<a href="${uri}">${this.innerHTML}</a>`;
         })
       }
-    })
+      });
   </script>
 </head>
 
@@ -52,29 +58,29 @@
         appearing
         on the
         cover of *Popular Electronics* in <b>January 1975</b>, demand exploded.
-        <br><wiki-link page="Ed_Roberts_(computer_engineer)">Ed Roberts</wiki-link> had hoped to sell
+        <br><wiki-a page="Ed_Roberts_(computer_engineer)">Ed Roberts</wiki-a> had hoped to sell
         about
         <b>200</b> units, within months MITS had a backlog of <b>4,000 orders</b>.
       </p>
       <p>
-        The <altair-link b></altair-link> success didn't just start the personal-computer revolution, it helped spawn
+        The <altair-link b></altair-link> success didn't just start the personal-computer revolution,<br>it helped spawn
         computer clubs,
         stores, magazines and an ecosystem of add-on hardware. And inspired a generation:
       <ul>
-        <li><wiki-link page="Bill_Gates">Bill Gates</wiki-link> and <wiki-link page="Paul_Allen">Paul Allen</wiki-link>
-          wrote the Altair BASIC interpreter and later
+        <li><wiki-a page="Bill_Gates">Bill Gates</wiki-a> and <wiki-a page="Paul_Allen">Paul Allen</wiki-a>
+          wrote the <wiki-a page="Altair_BASIC">Altair BASIC</wiki-a> interpreter and later
           founded
-          <wiki-link page="Microsoft">Microsoft</wiki-link> in 1975
+          <wiki-a page="Microsoft">Microsoft</wiki-a> in 1975
         </li>
-        <li><wiki-link page="Steve_Wozniak">Steve Wozniak</wiki-link> was inspired to design the <wiki-link
-            page="Apple_I">Apple-I</wiki-link>, and together with <wiki-link page="Steve_Jobs">Steve Jobs</wiki-link>
-          founded <wiki-link page="Apple_Inc.">Apple</wiki-link> in 1976
+        <li><wiki-a page="Steve_Wozniak">Steve Wozniak</wiki-a> was inspired to design the <wiki-a
+            page="Apple_I">Apple-I</wiki-a>, and together with <wiki-a page="Steve_Jobs">Steve Jobs</wiki-a>
+          founded <wiki-a page="Apple_Inc.">Apple</wiki-a> in 1976
         </li>
-        <li><wiki-link page="TRS-80#History">Don French</wiki-link> bought an <altair-link></altair-link>
+        <li><wiki-a page="TRS-80#History">Don French</wiki-a> bought an <altair-link></altair-link>
           and convinced
           his employer
           Tandy/Radio Shack to <i>develop and sell</i> its own computer.
-          <br>The <wiki-link page="TRS-80">TRS-80 Model I</wiki-link> launched in 1977 and sold more than
+          <br>The <wiki-a page="TRS-80">TRS-80 Model I</wiki-a> launched in 1977 and sold more than
           <b>250.000+</b> units, becoming the best-selling personal computer of the late 70s.
         </li>
       </ul>
@@ -94,17 +100,18 @@
         -->
       <altair-8800></altair-8800>
 
-      <h2>native HTML Web Components</h2>
+      <h2>native HTML Web Components - available since 2016</h2>
       <p>
         The working simulator is created with a single <code>&lt;altair-8800></code> <i>Custom Element</i> HTML tag (aka
         Web Component)
         <br>
         The 2 main components are <code>&lt;display-bit-led&gt;</code> for the LED lamps and
         <code>&lt;toggle-switch&gt;</code> for the switches.
-        <br>
+      </p>
+      <p>
         Explore the <a href="">full source</a> on GitHub to learn how all Web Components are build.
         <br>
-        As an extra <i>front-end</i> challenge count how many &lt;div> elements are used. (spoiler alert: none)
+        As an extra <i>front-end</i> challenge count how many &lt;div> elements are used in this page. (spoiler alert: none)
       </p>
 
     </main>
