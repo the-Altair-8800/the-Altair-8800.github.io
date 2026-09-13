@@ -29,6 +29,7 @@ body {
 h1 {
   margin-block: 0;
   margin-top: 0.5em;
+  padding:0 .1em;
   background: var(--bluebar);
   color: beige;
   text-shadow: 0 1px 0 black;
@@ -42,6 +43,7 @@ h2 {
 }
 
 p {
+  padding:0 .1em;
   margin-block: 0.5em;
 }
 
