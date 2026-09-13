@@ -1,0 +1,115 @@
+:host {
+  --size: var(--switch-size, 30px);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .35em;
+  width: var(--switch-width, auto);
+  font: 600 var(--switch-font-size, 9px)/1.15 var(--panel-font, ui-sans-serif, system-ui, sans-serif);
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--switch-label-color, #e7edf3);
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:host([hidden]) {
+  display: none;
+}
+
+:host([disabled]) {
+  opacity: .45;
+}
+
+.caption {
+  opacity: .85;
+  min-height: 1.15em;
+}
+
+.caption:empty {
+  min-height: 0;
+}
+
+.caption.label {
+  opacity: 1;
+  letter-spacing: .1em;
+}
+
+/* The paddle leans towards or away from you, so perspective does the work rather than a flat rotation. */
+.stage {
+  position: relative;
+  width: calc(var(--size) * .72);
+  height: var(--size);
+  perspective: calc(var(--size) * 4);
+}
+
+/* Chrome bezel nut the paddle emerges from. */
+.bezel {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: calc(var(--size) * .72);
+  height: calc(var(--size) * .34);
+  translate: -50% 0;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #9aa2aa 0%, #5d646b 45%, #2f353a 100%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .6), inset 0 1px 1px rgba(255, 255, 255, .35);
+}
+
+.paddle {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--size) * .1);
+  width: calc(var(--size) * .34);
+  height: calc(var(--size) * .86);
+  translate: -50% 0;
+  transform-origin: 50% 100%;
+  border-radius: 46% 46% 30% 30% / 30% 30% 12% 12%;
+  background: linear-gradient(90deg, #5c6167 0%, #eef2f6 26%, #c3c9cf 56%, #7d848b 82%, #4c5155 100%);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .55), inset 0 -2px 3px rgba(0, 0, 0, .35);
+  transition: transform 90ms cubic-bezier(.2, .9, .3, 1.4);
+  transform: rotateX(-4deg);
+}
+
+:host([value="up"]) .paddle {
+  transform: rotateX(34deg) translateY(-4%);
+}
+
+:host([value="down"]) .paddle {
+  transform: rotateX(-40deg) translateY(6%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paddle { transition: none; }
+}
+
+/* Invisible hit targets laid over the paddle: one per direction for a momentary switch, one for the whole thing otherwise. */
+.hits {
+  position: absolute;
+  inset: calc(var(--size) * -.12) -12%;
+  display: flex;
+  flex-direction: column;
+}
+
+.hit {
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.hit:focus-visible {
+  outline: 2px solid var(--switch-focus, #6cc6ff);
+  outline-offset: 1px;
+}
+
+:host([disabled]) .hit {
+  cursor: not-allowed;
+}

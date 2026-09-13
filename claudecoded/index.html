@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Altair 8800 — front panel simulator</title>
+<meta name="description" content="A working MITS Altair 8800 front panel in the browser: a real Intel 8080 core behind lamps and paddle switches built from two web components.">
+<link rel="stylesheet" href="panel.css">
+<script type="module" src="panel.js"></script>
+</head>
+<body>
+
+<header class="masthead">
+  <h1>Altair 8800</h1>
+  <p>
+    A front panel you can actually operate. Behind it is a full Intel 8080 core
+    running at 2&nbsp;MHz; in front of it are two web components —
+    <code>&lt;display-bit&gt;</code> for the lamps and
+    <code>&lt;toggle-switch&gt;</code> for the paddles. There is not a
+    <code>&lt;div&gt;</code> anywhere in it.
+  </p>
+</header>
+
+<main>
+
+  <altair-machine>
+    <altair-panel id="panel" data-power="off">
+
+      <panel-badge>
+        <mits-logo>mits</mits-logo>
+        <model-name>Altair 8800 Computer</model-name>
+      </panel-badge>
+
+      <status-row>
+        <lamp-cluster>
+          <lamp-bank id="status-lamps"></lamp-bank>
+          <lamp-bank id="wait-lamps"></lamp-bank>
+        </lamp-cluster>
+        <lamp-bank id="data-lamps"></lamp-bank>
+      </status-row>
+
+      <address-row>
+        <lamp-bank id="address-lamps"></lamp-bank>
+      </address-row>
+
+      <switch-row>
+        <control-bank id="control-switches"></control-bank>
+        <switch-bank id="data-switches"></switch-bank>
+      </switch-row>
+
+    </altair-panel>
+  </altair-machine>
+
+  <p class="scroll-hint">The panel is wider than your screen &mdash; drag it sideways to reach the rest of the switches.</p>
+
+  <p class="visually-hidden" id="announce" role="status" aria-live="polite"></p>
+
+  <operator-desk>
+
+    <desk-card>
+      <h2>Programs</h2>
+      <p>Loaded straight into memory, saving you a few hundred switch flicks.</p>
+      <program-list id="programs"></program-list>
+      <program-listing id="listing"></program-listing>
+    </desk-card>
+
+    <desk-card>
+      <h2>Machine</h2>
+      <desk-field>
+        <label for="clock">Clock</label>
+        <select id="clock">
+          <option value="2000000" selected>2 MHz (as shipped)</option>
+          <option value="500000">500 kHz</option>
+          <option value="100000">100 kHz</option>
+          <option value="20000">20 kHz</option>
+          <option value="2000">2 kHz — watch it think</option>
+        </select>
+      </desk-field>
+      <desk-field>
+        <label for="clear-memory">Memory</label>
+        <button class="tool" type="button" id="clear-memory">Clear all 64K</button>
+      </desk-field>
+      <pre class="monitor" id="monitor" aria-label="Machine state"></pre>
+    </desk-card>
+
+  </operator-desk>
+
+  <section class="docs">
+
+    <h2>Driving it</h2>
+    <ol>
+      <li>Flick <strong>ON</strong>, at the far left. The lamps come up showing the address register.</li>
+      <li>Set an address on the sixteen switches — up is a one, down is a zero — and flick <strong>EXAMINE</strong>. The address lamps echo it and the data lamps show what is in that byte.</li>
+      <li>Set a byte on the lower eight switches and flick <strong>DEPOSIT</strong>. <strong>DEPOSIT&nbsp;NEXT</strong> steps on a byte first, so you can pour a program in without touching the address switches again.</li>
+      <li><strong>EXAMINE</strong> the start address, then flick <strong>RUN</strong>. <strong>STOP</strong> halts; <strong>SINGLE&nbsp;STEP</strong> advances one instruction at a time with the lamps frozen on the result.</li>
+      <li><strong>RESET</strong> puts the program counter back to zero. <strong>PROTECT</strong> write-protects the 4K board holding the current address.</li>
+    </ol>
+
+    <h2>Kill the Bit</h2>
+    <p>
+      Load it, flick RUN, and a single bit walks through the upper address
+      lamps. Flick the sense switch directly under the lit lamp to kill it —
+      and flick it straight back down, because a switch left up only injects
+      another bit. The eight sense switches are the upper half of the bank, the
+      ones <code>IN&nbsp;FF</code> reads.
+    </p>
+
+    <h2>Why the lamps glow at half brightness</h2>
+    <p>
+      Because the real ones did. A lamp on the address bus is lit only during
+      the machine cycles that actually put its bit on the bus, thousands of
+      times a second, and your eye averages the rest. This panel counts every
+      bus cycle in a frame and sets each lamp's intensity to its duty cycle, so
+      a fast loop smears the low address bits into a steady half-glow while the
+      high bits step cleanly — exactly the texture you used to read a running
+      program by.
+    </p>
+
+    <h2>The components</h2>
+<pre class="monitor">&lt;display-bit label="A15"&gt;&lt;/display-bit&gt;
+  .on                 lit or dark
+  .intensity          0..1, how brightly it burns
+  label / color       attributes
+  ::part(label|lamp)  styling hooks
+
+&lt;toggle-switch up="EXAMINE" down="EXAMINE NEXT" momentary&gt;&lt;/toggle-switch&gt;
+&lt;toggle-switch label="15" value="down"&gt;&lt;/toggle-switch&gt;
+  .value              "up" | "center" | "down"
+  .bit                1 when up, 0 when down
+  momentary           spring return to centre
+  "action" event      {detail: {direction}} on every flick
+  "change" event      when a maintained switch settles somewhere new</pre>
+    <p>
+      Both are standalone ES modules with no dependencies. A maintained switch
+      reports itself to assistive technology as a switch; a momentary one gets
+      a separate button per direction, so <em>EXAMINE</em> and
+      <em>EXAMINE&nbsp;NEXT</em> are two distinct, individually named controls.
+      Arrow keys flick a paddle up or down; space and enter work too.
+    </p>
+
+    <h2>No divs, anywhere</h2>
+    <p>
+      Every box on this page — the case, the panel, each row, each octal group
+      of lamps, the cards below — is an undefined custom element named for the
+      thing it is: <code>&lt;altair-panel&gt;</code>,
+      <code>&lt;lamp-bank&gt;</code>, <code>&lt;bit-group&gt;</code>,
+      <code>&lt;switch-paddle&gt;</code>. They are never registered, so the
+      browser leaves them as plain <code>HTMLElement</code>s and they cost
+      nothing. The one thing they do not inherit is a useful default: an
+      unknown element with a hyphen in its name is <code>display: inline</code>,
+      so every one of them is given a display of its own in
+      <code>panel.css</code>. The buttons inside the switches are still real
+      <code>&lt;button&gt;</code>s, because the accessibility tree needs them
+      to be.
+    </p>
+
+    <h2>What this is not</h2>
+    <p>
+      The machine underneath is the CPU, 64K of memory and the front panel, and
+      nothing else: there is no serial board, no terminal and no disk
+      controller, so it will not boot CP/M. It is the panel — the part you
+      operated with your hands — rebuilt as web components. Inspired by the
+      Altair simulator at <code>s2js.com/altair/sim.html</code>.
+    </p>
+
+    <p class="footer">
+      The Altair 8800 was built by MITS in Albuquerque and announced on the
+      January 1975 cover of <em>Popular Electronics</em>. This is a homage, not
+      a product of theirs.
+    </p>
+
+  </section>
+
+</main>
+
+</body>
+</html>

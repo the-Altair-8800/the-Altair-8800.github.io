@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Altair 8800 front panel simulator</title>
+  <meta name="description"
+    content="A working MITS Altair 8800 front panel in the browser: a real Intel 8080 core behind lamps and paddle switches built from web components.">
+  <link rel="stylesheet" href="index-styles.css">
+  <script type="module" src="elements.js"></script>
+  <script>
+    // defining Custom Elements/Web Components to make using HTML easier/shorter
+    customElements.define("altair-link", class extends HTMLElement {
+      connectedCallback() {
+        let uri = `https://en.wikipedia.org/wiki/Altair_8800`;
+        let title = `Altair 8800`;
+        if (this.hasAttribute("b")) title = `<b>${title}</b>`;
+        this.innerHTML = `<a href="${uri}">${title}</a>`;
+      }
+    })
+    customElements.define("wiki-link", class extends HTMLElement {
+      connectedCallback() {
+        setTimeout(() => { // wait till innerHTML is parsed by the browser
+          let page = this.getAttribute("page");
+          let uri = `https://en.wikipedia.org/wiki/${page}`;
+          this.innerHTML = `<a href="${uri}">${this.innerHTML}</a>`;
+        })
+      }
+    })
+  </script>
+</head>
+
+<body>
+  <article>
+    <header>
+      <h1>The Altair 8800 - <i>inspired a generation</i></h1>
+      <p>
+        <b>The Smithsonian Museum</b> describes the <altair-link b></altair-link> as the machine that <b><i>“inaugurated the
+            personal
+            computer age.”</i></b>
+        <br>After
+        appearing
+        on the
+        cover of *Popular Electronics* in <b>January 1975</b>, demand exploded.
+        <br><wiki-link page="Ed_Roberts_(computer_engineer)">Ed Roberts</wiki-link> had hoped to sell
+        about
+        <b>200</b> units, within months MITS had a backlog of <b>4,000 orders</b>.
+      </p>
+      <p>
+        The <altair-link b></altair-link> success didn't just start the personal-computer revolution, it helped spawn
+        computer clubs,
+        stores, magazines and an ecosystem of add-on hardware. And inspired a generation:
+      <ul>
+        <li><wiki-link page="Bill_Gates">Bill Gates</wiki-link> and <wiki-link page="Paul_Allen">Paul Allen</wiki-link>
+          wrote the Altair BASIC interpreter and later
+          founded
+          <wiki-link page="Microsoft">Microsoft</wiki-link> in 1975
+        </li>
+        <li><wiki-link page="Steve_Wozniak">Steve Wozniak</wiki-link> was inspired to design the <wiki-link
+            page="Apple_I">Apple-I</wiki-link>, and together with <wiki-link page="Steve_Jobs">Steve Jobs</wiki-link>
+          founded <wiki-link page="Apple_Inc.">Apple</wiki-link> in 1976
+        </li>
+        <li><wiki-link page="TRS-80#History">Don French</wiki-link> bought an <altair-link></altair-link>
+          and convinced
+          his employer
+          Tandy/Radio Shack to <i>develop and sell</i> its own computer.
+          <br>The <wiki-link page="TRS-80">TRS-80 Model I</wiki-link> launched in 1977 and sold more than
+          <b>250.000+</b> units, becoming the best-selling personal computer of the late 70s.
+        </li>
+      </ul>
+      </p>
+      <p>
+        Flip some switches and relive the thrill.
+        <br>If you grew up on TikTok, keep flipping the "single step" switch and feel the wonder your
+        <i>grandfather</i> once knew.
+      </p>
+    </header>
+
+    <main>
+
+      <!-- 
+        here is the single HTML Custom Element/Web Component <altair-8800>
+          defined by the CustomElements API in the elements.js file
+        -->
+      <altair-8800></altair-8800>
+
+
+
+      <h2>native HTML Web Components</h2>
+      <p>
+        The working simulator is created with a single <code>&lt;altair-8800></code> <i>Custom Element</i> HTML tag (aka
+        Web Component)
+        <br>
+        The 2 main components are <code>&lt;display-bit-led&gt;</code> for the LED lamps and
+        <code>&lt;toggle-switch&gt;</code> for the switches.
+        <br>
+        Explore the <a href="">full source</a> on GitHub to learn how all Web Components are build.
+        <br>
+        As an extra <i>front-end</i> challenge count how many &lt;div> elements are used. (spoiler alert: none)
+      </p>
+
+    </main>
+  </article>
+</body>
+
+</html>

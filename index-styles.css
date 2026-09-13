@@ -1,0 +1,23 @@
+:root {
+  color-scheme: dark;
+  --ink: beige;
+  --font: Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+  /* The panel silkscreen is a tight condensed grotesque. */
+  --panel-font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+body {
+  color: var(--ink);
+  font-family: var(--font);
+  line-height: 1.4;
+  font-size: 110%;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+code {
+  font-family: var(--mono);
+  color: var(--ink);
+  background: grey;
+}

@@ -1,0 +1,51 @@
+:host {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--bit-gap, .5em);
+  font: 600 var(--bit-font-size, 10px)/1 var(--panel-font, ui-sans-serif, system-ui, sans-serif);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--bit-label-color, #e7edf3);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+:host([hidden]) {
+  display: none;
+}
+
+.label {
+  white-space: nowrap;
+  opacity: .82;
+}
+
+.lamp {
+  position: relative;
+  width: var(--bit-size, 14px);
+  height: var(--bit-size, 14px);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 28%, #6d2320 0%, #401210 55%, #250a09 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, .55),
+    inset 0 -1px 2px rgba(255, 255, 255, .12),
+    0 1px 2px rgba(0, 0, 0, .5);
+}
+
+/* The lit filament, faded in by --i rather than swapped out, so partial intensities render as a genuinely dimmer lamp. */
+.lamp::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 35% 28%, #fff1ec 0%, var(--bit-color, #ff4326) 46%, #ad1206 100%);
+  box-shadow: 0 0 calc(var(--bit-size, 14px) * .85) calc(var(--bit-size, 14px) * .16) rgba(255, 70, 40, .7);
+  opacity: var(--i, 0);
+  transition: opacity var(--bit-fade, 70ms) linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lamp::after { transition: none; }
+}

@@ -1,0 +1,296 @@
+/* Altair 8800 front panel simulator */
+
+:root {
+  color-scheme: dark;
+  --ink: #e8edf2;
+  --muted: #9aa7b4;
+  --bg: #0d1014;
+  --card: #161b21;
+  --line: #262d35;
+  --accent: #ff6a45;
+  --font: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+  /* The panel silkscreen is a tight condensed grotesque. */
+  --panel-font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+/* There is not a div on this page. Every box is an undefined custom element
+   named for what it is - which the browser leaves as a plain HTMLElement,
+   display: inline. So each one is given a display here before anything else. */
+altair-machine, altair-panel, panel-badge, mits-logo, model-name,
+status-row, address-row, switch-row, lamp-cluster, lamp-bank, switch-bank,
+control-bank, bit-group, operator-desk, desk-card, program-list,
+program-listing, desk-field { display: block; }
+
+body {
+  margin: 0;
+  padding: 0 max(16px, 3vw) 5rem;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #1b222b 0%, transparent 70%),
+    var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  line-height: 1.55;
+}
+
+.masthead {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 3rem 0 2rem;
+}
+.masthead h1 {
+  margin: 0;
+  font-size: clamp(1.9rem, 4vw, 2.9rem);
+  letter-spacing: -.02em;
+}
+.masthead p {
+  margin: .6rem 0 0;
+  max-width: 62ch;
+  color: var(--muted);
+}
+.masthead code { font-family: var(--mono); color: var(--ink); }
+
+main { max-width: 1180px; margin: 0 auto; }
+
+/* ---------------------------------------------------------------- the case */
+
+altair-machine {
+  padding: clamp(10px, 1.6vw, 22px);
+  border-radius: 10px;
+  background: linear-gradient(180deg, #23262b 0%, #15171a 100%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, .07) inset,
+    0 24px 60px rgba(0, 0, 0, .55);
+  overflow-x: auto;
+  container-type: inline-size;
+}
+
+altair-panel {
+  /* One unit is one percent of the panel width: every dimension below is
+     expressed in units, so the whole machine scales as one piece. It has to be
+     a real length rather than a percentage, because percentages inside it
+     would resolve against each element's own box further down. */
+  --u: clamp(7.2px, 1vw, 11.4px);
+  --u: clamp(7.2px, 1cqw, 11.4px);
+  /* Width budget, in units, across the 94.8u of content between the side
+     margins: switch bank 51.35, control switches 38.6, row gap 1.5. Every
+     length here is in units, so the fit holds at any panel size. */
+  --cell: calc(var(--u) * 2.85);
+  --ctrl: calc(var(--u) * 4.2);
+  --group-gap: calc(var(--u) * 1.15);
+
+  width: min(1140px, 100%);
+  min-width: 720px;
+  margin: 0 auto;
+  padding: calc(var(--u) * 2.4) calc(var(--u) * 2.6) calc(var(--u) * 3);
+  border-radius: calc(var(--u) * .6);
+  background:
+    linear-gradient(180deg, #33404c 0%, #2a343e 42%, #222b33 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .14),
+    inset 0 -1px 0 rgba(0, 0, 0, .5),
+    0 2px 6px rgba(0, 0, 0, .5);
+  transition: filter .35s ease;
+
+  --bit-size: calc(var(--u) * 1.3);
+  --bit-font-size: calc(var(--u) * .82);
+  --bit-gap: calc(var(--u) * .55);
+  --switch-size: calc(var(--u) * 2.5);
+  --switch-font-size: calc(var(--u) * .78);
+}
+
+/* Power off: the lamps go out on their own, the panel just goes cold. */
+altair-panel[data-power="off"] { filter: saturate(.35) brightness(.82); }
+
+/* The badge -------------------------------------------------------------- */
+
+panel-badge {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 1.4);
+  margin-bottom: calc(var(--u) * 2.6);
+}
+panel-badge mits-logo {
+  padding: calc(var(--u) * .35) calc(var(--u) * .9);
+  border-radius: calc(var(--u) * .25);
+  background: linear-gradient(180deg, #f2f4f6, #c6ccd2);
+  color: #1d2630;
+  font: 800 calc(var(--u) * 1.15)/1 var(--panel-font);
+  letter-spacing: .28em;
+  text-transform: uppercase;
+}
+panel-badge model-name {
+  flex: 1;
+  padding: calc(var(--u) * .45) calc(var(--u) * 1.2);
+  border-radius: calc(var(--u) * .25);
+  background: linear-gradient(90deg, #1f5f9e 0%, #2d7cc4 55%, #5aa6e0 100%);
+  color: #fff;
+  font: 700 calc(var(--u) * 1.25)/1.2 var(--panel-font);
+  letter-spacing: .34em;
+  text-transform: uppercase;
+}
+
+/* Rows ------------------------------------------------------------------- */
+
+status-row, address-row, switch-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: calc(var(--u) * 1.5);
+}
+address-row { margin-top: calc(var(--u) * 2.2); justify-content: flex-end; }
+switch-row { margin-top: calc(var(--u) * 3.4); align-items: flex-start; }
+
+lamp-cluster { display: flex; align-items: flex-end; gap: calc(var(--u) * 3.2); }
+
+/* A bank is a set of octal groups; a group is a run of lamps or switches. */
+lamp-bank, switch-bank { display: flex; gap: var(--group-gap); }
+
+lamp-bank display-bit,
+switch-bank toggle-switch { width: var(--cell); }
+
+/* The status legends are words rather than bit numbers, so they get more room
+   than the address lamps they sit above. */
+lamp-cluster display-bit { width: calc(var(--u) * 3.4); }
+
+/* A run of lamps or switches, with the hairline under it that the silkscreen
+   draws around each octal group. */
+bit-group {
+  display: flex;
+  padding-bottom: calc(var(--u) * .5);
+  border-bottom: 1px solid rgba(255, 255, 255, .16);
+}
+
+control-bank {
+  display: flex;
+  gap: calc(var(--u) * .1);
+  /* The legends are long and the switches close together, so the control
+     group gets its own smaller type, as it does on the real silkscreen. */
+  --switch-font-size: calc(var(--u) * .72);
+}
+control-bank toggle-switch { width: var(--ctrl); }
+control-bank toggle-switch:first-child { margin-right: calc(var(--u) * 1.6); }
+
+/* Two-line room above and below every control switch keeps all the paddles on
+   one line no matter how long the legend is. */
+control-bank toggle-switch::part(up),
+control-bank toggle-switch::part(down) {
+  display: flex;
+  justify-content: center;
+  min-height: calc(var(--u) * 2.1);
+}
+control-bank toggle-switch::part(up) { align-items: flex-end; }
+control-bank toggle-switch::part(down) { align-items: flex-start; }
+
+/* --------------------------------------------------------- operator's desk */
+
+/* The panel cannot shrink below 720px and stay readable, so on a narrow screen
+   it scrolls inside its case instead. Say so. */
+.scroll-hint {
+  display: none;
+  margin: .6rem 0 0;
+  color: var(--muted);
+  font-size: .85rem;
+}
+@media (max-width: 800px) {
+  .scroll-hint { display: block; }
+}
+
+operator-desk {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+desk-card {
+  padding: 1.1rem 1.2rem 1.3rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card);
+}
+desk-card h2 {
+  margin: 0 0 .2rem;
+  font-size: .78rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+desk-card p { margin: .35rem 0 .9rem; color: var(--muted); font-size: .9rem; }
+
+program-list { display: flex; flex-wrap: wrap; gap: .5rem; }
+
+button.load,
+button.tool {
+  padding: .45rem .8rem;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #1e242b;
+  color: var(--ink);
+  font: inherit;
+  font-size: .88rem;
+  cursor: pointer;
+}
+button.load:hover,
+button.tool:hover { border-color: #3d4954; background: #232b33; }
+button.load:focus-visible,
+button.tool:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+desk-field { display: flex; align-items: center; gap: .6rem; margin-bottom: .6rem; }
+desk-field label { font-size: .85rem; color: var(--muted); min-width: 6.5rem; }
+desk-field select,
+desk-field input {
+  flex: 1;
+  padding: .35rem .5rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #11161b;
+  color: var(--ink);
+  font: inherit;
+  font-size: .88rem;
+}
+
+.monitor {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: .82rem;
+  line-height: 1.65;
+  white-space: pre;
+  overflow-x: auto;
+  color: #b8e6c8;
+}
+
+/* ------------------------------------------------------------------- prose */
+
+.docs { margin-top: 3rem; max-width: 68ch; }
+.docs h2 { font-size: 1.25rem; margin: 2rem 0 .5rem; }
+.docs p, .docs li { color: #c3ccd6; }
+.docs code {
+  font-family: var(--mono);
+  font-size: .88em;
+  padding: .1em .35em;
+  border-radius: 4px;
+  background: #1b2128;
+}
+.docs ol, .docs ul { padding-left: 1.2rem; }
+.docs li { margin: .3rem 0; }
+.docs a { color: var(--accent); }
+
+.footer {
+  margin-top: 3rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: .85rem;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
