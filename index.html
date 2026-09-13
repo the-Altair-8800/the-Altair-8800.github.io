@@ -4,8 +4,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta property="og:image" content="https://the-altair-8800.github.io/altair-8800-panel.png">
 
+  <meta property="og:image" content="https://the-altair-8800.github.io/altair-8800-panel.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Altair 8800 simulator">
+  
   <link rel="icon" type="image/svg+xml"
     href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d5fd1'/%3E%3Cpath d='M20 48L30 16h4l10 32h-6l-2.2-8h-7.6L26 48h-6zm8.6-12h6.8l-3.4-12-3.4 12z' fill='white'/%3E%3C/svg%3E">
 
@@ -29,9 +33,9 @@
         this.innerHTML = `<a href="${uri}">${title}</a>`;
       }
     });
-    </script>
-    <script>
-      customElements.define("wiki-a", class extends HTMLElement {
+</script>
+  <script>
+    customElements.define("wiki-a", class extends HTMLElement {
       connectedCallback() {
         setTimeout(() => { // wait till innerHTML is parsed by the browser
           let page = this.getAttribute("page");
@@ -39,7 +43,7 @@
           this.innerHTML = `<a href="${uri}">${this.innerHTML}</a>`;
         })
       }
-      });
+    });
   </script>
 </head>
 
@@ -87,7 +91,8 @@
       </p>
       <p>
         Flip some switches and relive the <b>1975 <i>thrill</i></b>.
-        <br>If you grew up on TikTok, keep flipping that "single step" switch and feel the wonder your <i>grandfather</i> felt
+        <br>If you grew up on TikTok, keep flipping that "single step" switch and feel the wonder your
+        <i>grandfather</i> felt
         when a blinking LED was more exciting than a million likes.
       </p>
     </header>
@@ -109,10 +114,12 @@
         <code>&lt;toggle-switch&gt;</code> for the switches.
       </p>
       <p>
-        Explore the <a href="https://github.com/the-Altair-8800/the-Altair-8800.github.io">full source on GitHub</a> to learn
+        Explore the <a href="https://github.com/the-Altair-8800/the-Altair-8800.github.io">full source on GitHub</a> to
+        learn
         how all Web Components are build.
         <br>
-        As an extra <i>front-end</i> challenge count how many &lt;div> elements are used in this page. (spoiler alert: none)
+        As an extra <i>front-end</i> challenge count how many &lt;div> elements are used in this page. (spoiler alert:
+        none)
       </p>
 
     </main>
