@@ -16,9 +16,18 @@ body {
   margin: 0 auto;
 }
 
+h1 {
+  margin-block: 0;
+  margin-top: 0.5em;
+}
+
 h2 {
   margin-block: 0;
   font-size: 120%;
+}
+
+p {
+  margin-block: 0.5em;
 }
 
 code {
