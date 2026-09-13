@@ -6,7 +6,7 @@ Online: [The-Altair-8800.github.io](https://the-altair-8800.github.io/)
 
 ## Disclaimer
 
-Claude Code wrote the whole Altair 8800 Simulator in 20 minutes.
+Claude Code wrote [the whole Altair 8800 Simulator](https://the-altair-8800.github.io/claudecoded/index.html) in 20 minutes.
 
 It then took me a day to get rid of all the &lt;div> soup and replace them with proper *Custom Elements*
 
