@@ -10,10 +10,15 @@
 body {
   color: var(--ink);
   font-family: var(--font);
-  line-height: 1.4;
+  line-height: 1.35;
   font-size: 110%;
   max-width: 1180px;
   margin: 0 auto;
+}
+
+h2 {
+  margin-block: 0;
+  font-size: 120%;
 }
 
 code {
