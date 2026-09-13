@@ -1,3 +1,9 @@
+
+// Load from any Webpage:
+// <script type="module">https://The-Altair-8800.github.io/define-elements.js</script>
+// Then use the HTML tag:
+// <altair-8800></altair-8800>
+
 /**
  * Bootstrap the custom elements used by the page.
  *
@@ -13,3 +19,4 @@
 import "./altair-display-bit-led.js";
 import "./altair-toggle-switch.js";
 import "./altair-8800-panel.js";
+

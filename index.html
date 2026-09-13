@@ -9,7 +9,7 @@
   <meta name="description"
     content="A working MITS Altair 8800 front panel in the browser: a real Intel 8080 core behind lamps and paddle switches built from web components.">
   <link rel="stylesheet" href="index-styles.css">
-  <script type="module" src="elements.js"></script>
+  <script type="module" src="define-elements.js"></script>
   <script>
     // defining Custom Elements/Web Components to make using HTML easier/shorter
     customElements.define("altair-link", class extends HTMLElement {
@@ -75,7 +75,7 @@
       </ul>
       </p>
       <p>
-        Flip some switches and relive the thrill.
+        Flip some switches and relive the <b>1975 <i>thrill</i></b>.
         <br>If you grew up on TikTok, keep flipping the "single step" switch and feel the wonder your
         <i>grandfather</i> once knew.
       </p>
@@ -85,11 +85,9 @@
 
       <!-- 
         here is the single HTML Custom Element/Web Component <altair-8800>
-          defined by the CustomElements API in the elements.js file
+          defined by the CustomElements API in the define-elements.js file
         -->
       <altair-8800></altair-8800>
-
-
 
       <h2>native HTML Web Components</h2>
       <p>
