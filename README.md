@@ -16,13 +16,15 @@ Lesson learned: The prompt *"create the Altair 8800 with Web Components"* may ha
 
 ## Standalone component usage
 
-The simulator can be mounted as a native web component in any page without the demo shell:
+The simulator can be mounted as a native web component in any page with:
 
 ```html
-<script type="module">
-  import "./altair-8800-panel.js";
-</script>
+<script type="module" src="https://The-Altair-8800.github.io/define-elements.js"></script>
+```
 
+Usage in HTML:
+
+```html
 <altair-8800></altair-8800>
 ```
 
