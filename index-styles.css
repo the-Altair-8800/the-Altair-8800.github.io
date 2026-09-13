@@ -49,6 +49,9 @@ a {
   color: var(--blue3);
 }
 
+li {
+  padding-bottom: .5em;
+}
 code {
   font-family: var(--mono);
   font-size: 120%;
