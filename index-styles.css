@@ -3,6 +3,7 @@
   --ink: beige;
   --font: Arial, sans-serif;
   --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+  --panel-font: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
   --blue1: rgb(31, 95, 158);
   --blue2: rgb(45, 124, 196);
@@ -17,9 +18,10 @@
 
 body {
   color: var(--ink);
-  font-family: var(--font);
+  font-family: var(--panel-font);
   line-height: 1.35;
-  font-size: 110%;
+  font: 1.2em var(--panel-font);
+  letter-spacing: 0.02em;
   max-width: 1180px;
   margin: 0 auto;
 }
@@ -30,6 +32,8 @@ h1 {
   background: var(--bluebar);
   color: beige;
   text-shadow: 0 1px 0 black;
+  font: 1.5em var(--panel-font);
+  letter-spacing: 0.1em;
 }
 
 h2 {
